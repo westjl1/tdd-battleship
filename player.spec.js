@@ -14,5 +14,15 @@ describe("Player object testing", () => {
       { x: 1, y: 4, isHit: false },
       { x: 1, y: 5, isHit: false },
     ]);
+    //player1.battleship.takeHit(1, 4);
+
+    // console.log(player1.takenSpots());
+    // console.log(player1.takenSpots().has("[1,2]"));
+
+    player2 = createPlayer("Computer", "computer");
+
+    player2.ships.forEach((ship) => {
+      console.log(ship.getHits());
+    });
   });
 });

@@ -35,6 +35,7 @@ function createShip(type) {
       }
     }
     ship.hits = shipPlacement;
+    return shipPlacement;
   };
 
   const takeHit = (x, y) => {
