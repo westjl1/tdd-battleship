@@ -8,25 +8,7 @@ function createPlayer(name, type = "human") {
   const patrol = createShip("patrol");
   const ships = [carrier, battleship, destroyer, submarine, patrol];
 
-  const takenSpots = () => {
-    let spotsTaken = new Set();
-    ships.forEach((ship) => {
-      ship.getHits().forEach((hit) => {
-        if (hit.x && hit.y) {
-          spotsTaken.add(JSON.stringify([hit.x, hit.y]));
-        }
-      });
-    });
-    return spotsTaken;
-  };
-
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
-  if (type == "computer") {
+  const autoPlaceShips = () => {
     ships.forEach((ship) => {
       let possibleStartsSetHorizontal = new Set();
       let possibleStartsSetVirtical = new Set();
@@ -43,7 +25,7 @@ function createPlayer(name, type = "human") {
           if (endX <= 9) {
             let blocker = false;
             for (let i = x; i <= endX; i++) {
-              if (takenSpots().has(`[${i},${y}]`)) {
+              if (takenSpots(ships).has(`[${i},${y}]`)) {
                 blocker = true;
               }
             }
@@ -61,7 +43,7 @@ function createPlayer(name, type = "human") {
           if (endY <= 9) {
             let blocker = false;
             for (let i = y; i <= endY; i++) {
-              if (takenSpots().has(`[${x},${i}]`)) {
+              if (takenSpots(ships).has(`[${x},${i}]`)) {
                 blocker = true;
               }
             }
@@ -101,6 +83,10 @@ function createPlayer(name, type = "human") {
 
       ship.placeShip(shipStart, shipEnd);
     });
+  };
+
+  if (type == "computer") {
+    autoPlaceShips();
   }
 
   return {
@@ -112,7 +98,26 @@ function createPlayer(name, type = "human") {
     submarine: submarine,
     patrol: patrol,
     ships: ships,
+    autoPlaceShips: autoPlaceShips,
   };
+}
+
+function takenSpots(ships) {
+  let spotsTaken = new Set();
+  ships.forEach((ship) => {
+    ship.getHits().forEach((hit) => {
+      if (hit.x && hit.y) {
+        spotsTaken.add(JSON.stringify([hit.x, hit.y]));
+      }
+    });
+  });
+  return spotsTaken;
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 export default createPlayer;

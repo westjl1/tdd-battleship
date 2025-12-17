@@ -14,14 +14,30 @@ describe("Player object testing", () => {
       { x: 1, y: 4, isHit: false },
       { x: 1, y: 5, isHit: false },
     ]);
-    //player1.battleship.takeHit(1, 4);
+  });
 
-    // console.log(player1.takenSpots());
-    // console.log(player1.takenSpots().has("[1,2]"));
+  test("Hit player ones' battleship", () => {
+    player1.battleship.takeHit(1, 4);
+    expect(player1.battleship.getHits()).toEqual([
+      { x: 1, y: 2, isHit: false },
+      { x: 1, y: 3, isHit: false },
+      { x: 1, y: 4, isHit: true },
+      { x: 1, y: 5, isHit: false },
+    ]);
+  });
 
+  test("Computer player auto ship placement", () => {
     player2 = createPlayer("Computer", "computer");
 
-    player2.ships.forEach((ship) => {
+    // player2.ships.forEach((ship) => {
+    //   console.log(ship.getHits());
+    // });
+  });
+
+  test("Auto place player 1 ships", () => {
+    player1.autoPlaceShips();
+
+    player1.ships.forEach((ship) => {
       console.log(ship.getHits());
     });
   });
